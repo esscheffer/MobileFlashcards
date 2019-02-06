@@ -1,14 +1,56 @@
 import React, {Component} from 'react';
+import {AsyncStorage, FlatList, View} from "react-native";
+import {Divider, ListItem} from 'react-native-elements'
+import {connect} from "react-redux";
+import {receiveDecks} from "../actions";
 
 class DecksList extends Component {
-    state = {};
+    componentDidMount() {
+        const self = this;
+        AsyncStorage.getAllKeys()
+            .then(keys => {
+                AsyncStorage.multiGet(keys)
+                    .then(decks => {
+                        const decksObject = {
+                            decks: decks.map(deck => {
+                                return JSON.parse(deck[1])
+                            })
+                        };
+                        self.props.dispatch(receiveDecks(decksObject));
+                    });
+            });
+    }
+
+    keyExtractor = (item) => item.title;
+
+    listItem = ({item}) => (
+        <ListItem
+            title={item.title}
+            subtitle={`${item.questions.length} cards`}
+            onPress={() => this.props.navigation.navigate('Deck', {deck: item})}
+        />
+    );
+
+    renderSeparator = () => {
+        return (
+            <Divider style={{backgroundColor: 'grey'}}/>
+        );
+    };
 
     render() {
         return (
-            <div>
-            </div>
+            <View>
+                <FlatList data={this.props.decks}
+                          renderItem={this.listItem}
+                          keyExtractor={this.keyExtractor}
+                          ItemSeparatorComponent={this.renderSeparator}/>
+            </View>
         );
     }
 }
 
-export default DecksList;
+function mapStateToProps({decks}) {
+    return {decks};
+}
+
+export default connect(mapStateToProps)(DecksList)
