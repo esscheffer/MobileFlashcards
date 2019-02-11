@@ -1,4 +1,5 @@
-import {ADD_DECK, RECEIVE_DECKS} from "../actions";
+import {ADD_CARD, ADD_DECK, RECEIVE_DECKS} from "../actions";
+import {addToDuplicateArray} from "../components/utils/ArrayUtils";
 
 function decks(state = {}, action) {
     switch (action.type) {
@@ -8,11 +9,16 @@ function decks(state = {}, action) {
                 ...action.decks
             };
         case ADD_DECK:
-            let newArray = state.decks.slice();
-            newArray.push(action.deck);
             return {
                 ...state,
-                decks: newArray
+                decks: addToDuplicateArray(state.decks, action.deck)
+            };
+        case ADD_CARD:
+            return {
+                ...state,
+                decks: state.decks.map(deck => deck.title === action.deckTitle ? {
+                    ...deck, questions: addToDuplicateArray(deck.questions, action.card)
+                } : deck)
             };
         default:
             return state;

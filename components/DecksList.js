@@ -24,10 +24,9 @@ class DecksList extends Component {
     keyExtractor = (item) => item.title;
 
     listItem = ({item}) => (
-        <ListItem
-            title={item.title}
-            subtitle={`${item.questions.length} cards`}
-            onPress={() => this.props.navigation.navigate('Deck', {deck: item})}
+        <ListItem title={item.title}
+                  subtitle={`${item.questions.length} cards`}
+                  onPress={() => this.props.navigation.navigate('Deck', {deckTitle: item.title})}
         />
     );
 
