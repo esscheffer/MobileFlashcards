@@ -3,7 +3,7 @@ import {Alert, AsyncStorage, View} from "react-native";
 import {Button, Input} from "react-native-elements";
 import {addCard} from "../actions";
 import {connect} from "react-redux";
-import {addToDuplicateArray} from "./utils/ArrayUtils";
+import {addToDuplicateArray} from "../utils/ArrayUtils";
 
 class AddCard extends Component {
     state = {

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import styled from "styled-components/native/dist/styled-components.native.esm";
 import {Button} from "react-native-elements";
 import {connect} from "react-redux";
+import {Alert} from "react-native";
 
 const MainView = styled.View`
     flex: 1;
@@ -27,6 +28,22 @@ const CardCountText = styled.Text`
 `;
 
 class Deck extends Component {
+    startQuizHandler = () => {
+        const {deck} = this.props;
+        if (deck.questions.length === 0) {
+            Alert.alert(
+                'No question',
+                'Add a question to this deck to start a quiz',
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false},
+            );
+        } else {
+            this.props.navigation.navigate('Quiz', {deck: deck})
+        }
+    };
+
     render() {
         const {deck} = this.props;
         return (
@@ -38,7 +55,9 @@ class Deck extends Component {
                         containerStyle={{margin: 8}}
                         onPress={() =>
                             this.props.navigation.navigate('AddCard', {deckTitle: deck.title})}/>
-                <Button title="Start Quiz" containerStyle={{margin: 8}}/>
+                <Button title="Start Quiz"
+                        containerStyle={{margin: 8}}
+                        onPress={this.startQuizHandler}/>
             </MainView>
         );
     }

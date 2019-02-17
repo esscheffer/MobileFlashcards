@@ -5,6 +5,7 @@ import TabNavigator from "./TabNavigator";
 import {Constants} from "expo";
 import {Platform} from "react-native";
 import AddCard from "../AddCard";
+import Quiz from "../Quiz";
 
 const StackNavigator = createStackNavigator({
     Main: {
@@ -20,6 +21,10 @@ const StackNavigator = createStackNavigator({
     AddCard: {
         screen: AddCard,
         navigationOptions: getNavigationOptions('Add Card')
+    },
+    Quiz: {
+        screen: Quiz,
+        navigationOptions: getNavigationOptions('Quiz')
     }
 });
 

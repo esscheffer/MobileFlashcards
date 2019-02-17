@@ -1,5 +1,5 @@
 import {ADD_CARD, ADD_DECK, RECEIVE_DECKS} from "../actions";
-import {addToDuplicateArray} from "../components/utils/ArrayUtils";
+import {addToDuplicateArray} from "../utils/ArrayUtils";
 
 function decks(state = {}, action) {
     switch (action.type) {
