@@ -21,15 +21,23 @@ const TitleText = styled.Text`
 `;
 
 class NewDeck extends Component {
-    state = {deckTitle: ""};
+    state = {
+        deckTitle: "",
+        deckTitleErrorMessage: ""
+    };
 
     handleTextChange = deckTitle => {
-        this.setState({deckTitle})
+        this.setState({deckTitle, deckTitleErrorMessage: ""})
     };
 
     handleSubmit = () => {
         const {deckTitle} = this.state;
         const newDeck = {title: deckTitle, questions: []};
+
+        if (!deckTitle) {
+            this.setState({deckTitleErrorMessage: "Title is required"});
+            return;
+        }
 
         this.props.dispatch(addDeck(newDeck));
 
@@ -55,7 +63,8 @@ class NewDeck extends Component {
                 <Input placeholder='Deck Title'
                        value={this.state.deckTitle}
                        onChangeText={this.handleTextChange}
-                       containerStyle={{margin: 8}}/>
+                       containerStyle={{margin: 8}}
+                       errorMessage={this.state.deckTitleErrorMessage}/>
                 <Button title="Submit"
                         onPress={this.handleSubmit}
                         containerStyle={{margin: 8}}/>
