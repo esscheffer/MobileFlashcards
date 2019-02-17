@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Text, View} from "react-native";
+import {View} from "react-native";
 import styled from "styled-components/native/dist/styled-components.native.esm";
 import {Button} from "react-native-elements";
 import QuizResult from "./QuizResult";
+import {clearLocalNotification, setLocalNotification} from "../utils/NotificationUtils";
 
 const MainView = styled.View`
     flex: 1;
@@ -67,11 +68,13 @@ class Quiz extends Component {
 
     finishQuiz = lastQuestionCorrect => {
         this.setState(previousState => ({
-            totalCorrectAnswers: previousState.totalCorrectAnswers + (lastQuestionCorrect ? 1 : -1),
+            totalCorrectAnswers: previousState.totalCorrectAnswers + (lastQuestionCorrect ? 1 : 0),
             currentQuestionIndex: 0,
             showingAnswer: false,
             showingResult: true
         }));
+
+        clearLocalNotification().then(setLocalNotification)
     };
 
     restartQuiz = () => {

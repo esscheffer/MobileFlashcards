@@ -3,13 +3,14 @@ import {AsyncStorage, FlatList, View} from "react-native";
 import {Divider, ListItem} from 'react-native-elements'
 import {connect} from "react-redux";
 import {receiveDecks} from "../actions";
+import {NOTIFICATION_KEY} from "../utils/NotificationUtils";
 
 class DecksList extends Component {
     componentDidMount() {
         const self = this;
         AsyncStorage.getAllKeys()
             .then(keys => {
-                AsyncStorage.multiGet(keys)
+                AsyncStorage.multiGet(keys.filter(key => key !== NOTIFICATION_KEY))
                     .then(decks => {
                         const decksObject = {
                             decks: decks.map(deck => {
@@ -49,7 +50,7 @@ class DecksList extends Component {
 }
 
 function mapStateToProps({decks}) {
-    return {decks};
+    return {decks: decks || []};
 }
 
 export default connect(mapStateToProps)(DecksList)
