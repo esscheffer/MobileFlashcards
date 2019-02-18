@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {View} from "react-native";
 import styled from "styled-components/native/dist/styled-components.native.esm";
 import {Button} from "react-native-elements";
@@ -33,7 +33,7 @@ const ProgressText = styled.Text`
     font-size: 16px;
 `;
 
-class Quiz extends Component {
+class Quiz extends PureComponent {
     state = {
         currentQuestionIndex: 0,
         totalCorrectAnswers: 0,
@@ -42,24 +42,20 @@ class Quiz extends Component {
     };
 
     handleCorrectAnswer = () => {
-        // noinspection JSCheckFunctionSignatures
-        if ((this.state.currentQuestionIndex + 1) === this.props.navigation.getParam("deck").questions.length) {
-            this.finishQuiz(true)
-        } else {
-            this.setState(previousState => ({
-                totalCorrectAnswers: previousState.totalCorrectAnswers + 1,
-                currentQuestionIndex: previousState.currentQuestionIndex + 1,
-                showingAnswer: false
-            }));
-        }
+        this.handleAnswer(true);
     };
 
     handleIncorrectAnswer = () => {
+        this.handleAnswer(false);
+    };
+
+    handleAnswer = isCorrect => {
         // noinspection JSCheckFunctionSignatures
         if ((this.state.currentQuestionIndex + 1) === this.props.navigation.getParam("deck").questions.length) {
-            this.finishQuiz(false);
+            this.finishQuiz(isCorrect)
         } else {
             this.setState(previousState => ({
+                totalCorrectAnswers: previousState.totalCorrectAnswers + (isCorrect ? 1 : 0),
                 currentQuestionIndex: previousState.currentQuestionIndex + 1,
                 showingAnswer: false
             }));
@@ -118,10 +114,10 @@ class Quiz extends Component {
                                                 onPress={this.handleCorrectAnswer}
                                                 buttonStyle={{backgroundColor: 'green'}}
                                                 containerStyle={{margin: 8}}/>
-                                        < Button title="Incorrect"
-                                                 buttonStyle={{backgroundColor: 'red'}}
-                                                 onPress={this.handleIncorrectAnswer}
-                                                 containerStyle={{margin: 8}}/>
+                                        <Button title="Incorrect"
+                                                buttonStyle={{backgroundColor: 'red'}}
+                                                onPress={this.handleIncorrectAnswer}
+                                                containerStyle={{margin: 8}}/>
                                     </ButtonsView>
                                 </View>
                                 : <View>

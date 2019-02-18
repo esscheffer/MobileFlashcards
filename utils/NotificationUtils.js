@@ -8,21 +8,20 @@ export function clearLocalNotification() {
         .then(Notifications.cancelAllScheduledNotificationsAsync)
 }
 
-function createNotification() {
-    return {
-        title: 'Do a quiz!',
-        body: "Don't forget to do a quiz today!",
-        ios: {
-            sound: true,
-        },
-        android: {
-            sound: true,
-            priority: 'high',
-            sticky: false,
-            vibrate: true,
-        }
+const notification = {
+    title: 'Do a quiz!',
+    body: "Don't forget to do a quiz today!",
+    ios: {
+        sound: true,
+    },
+    android: {
+        sound: true,
+        priority: 'high',
+        sticky: false,
+        vibrate: true,
     }
-}
+};
+
 
 export function setLocalNotification() {
     AsyncStorage.getItem(NOTIFICATION_KEY)
@@ -42,7 +41,7 @@ export function setLocalNotification() {
                             tomorrow.setMinutes(48);
                             // noinspection JSIgnoredPromiseFromCall
                             Notifications.scheduleLocalNotificationAsync(
-                                createNotification(),
+                                notification,
                                 {
                                     time: tomorrow,
                                     repeat: 'day',

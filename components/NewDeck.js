@@ -54,6 +54,8 @@ class NewDeck extends Component {
             );
 
         this.setState({deckTitle: ""});
+
+        this.props.navigation.navigate('Deck', {deckTitle});
     };
 
     render() {
